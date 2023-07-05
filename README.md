@@ -1,4 +1,3 @@
-
 # 👨‍🏫 AI-Driven Course Scraper
 
 This is a Node.js application that performs AI-driven scraping of a website to fetch course information. The application periodically checks for new courses and extracts relevant data using AI algorithms. It also provides an API endpoint to fetch the latest courses.
@@ -55,6 +54,37 @@ This will start the Express server on `http://localhost:3000`.
   - `newCourses`: A boolean value indicating whether new courses are available.
   - `courses`: An array of objects containing the name of the course and its Udemy link.
 
+**Example:**
+
+To interact with the API and fetch the latest courses, you can make a GET request to the following endpoint:
+
+```
+GET https://eduscout.vercel.app/
+```
+
+Here's an example in JavaScript using `fetch`:
+
+```javascript
+fetch('https://eduscout.vercel.app/')
+  .then(response => response.json())
+  .then(data => {
+    if (data.newCourses) {
+      console.log('New courses available:');
+      data.courses.forEach(course => {
+        console.log('Name:', course.name);
+        console.log('Udemy Link:', course.udemyLink);
+      });
+    } else {
+      console.log('No new courses available.');
+    }
+  })
+  .catch(error => {
+    console.error('An error occurred:', error);
+  });
+```
+
+Feel free to adapt the code snippet to your preferred programming language or tool.
+
 ## Configuration ⚙️
 
 The following variables can be configured in the code:
@@ -74,9 +104,13 @@ The application uses AI algorithms to extract relevant data from the course page
 - The `axios` library is used for making HTTP requests.
 - CORS is enabled to allow cross-origin requests.
 - The application periodically checks for new courses every 30 minutes using the `checkForNewCourses` function.
-- Error handling is implemented for handling errors during scraping and HTTP requests.
+- Error handling is implemented for handling errors during scraping
+
+ and HTTP requests.
 
 ## License 📄
 
 This project is licensed under the [MIT License](LICENSE).
+```
 
+Please replace "https://eduscout.vercel.app/" in the example with the actual URL where the API is hosted.
