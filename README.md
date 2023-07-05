@@ -111,4 +111,4 @@ The application uses AI algorithms to extract relevant data from the course page
 ## License 📄
 
 This project is licensed under the [MIT License](LICENSE).
-```
+
