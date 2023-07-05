@@ -112,5 +112,3 @@ The application uses AI algorithms to extract relevant data from the course page
 
 This project is licensed under the [MIT License](LICENSE).
 ```
-
-Please replace "https://eduscout.vercel.app/" in the example with the actual URL where the API is hosted.
