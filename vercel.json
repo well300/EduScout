@@ -1,10 +1,16 @@
 {
-    "version": 2,
-    "name": "udemy-courses-api",
-    "builds": [
-       { "src": "api.js", "use": "@vercel/node" }
-    ],
-    "routes": [
-       { "src": "/(.*)", "dest": "/api.js" }
-    ]
-  }
+  "version": 2,
+  "name": "EduScout",
+  "builds": [
+    {
+      "src": "api.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api.js"
+    }
+  ]
+}
