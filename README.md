@@ -1,4 +1,4 @@
-# 👨‍🏫 AI-Driven Course Scraper
+# 👨‍🏫 EduScou AI-Driven Courses
 
 This is a Node.js application that performs AI-driven scraping of a website to fetch course information. The application periodically checks for new courses and extracts relevant data using AI algorithms. It also provides an API endpoint to fetch the latest courses.
 
