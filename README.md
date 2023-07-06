@@ -1,81 +1,62 @@
+# EduScout ✨📚🎓
 
-# 👨‍🏫 EduScout AI-Driven Course
+EduScout-chan is a super kawaii web application that scrapes educational course information from an amazing website. It uses AI-driven smart scraping techniques to extract relevant data from the course pages and provides an API endpoint to check for new courses periodically. 😄🌟
 
-This is a Node.js application that performs AI-driven scraping of a website to fetch course information. The application periodically checks for new courses and extracts relevant data using AI algorithms. It also provides an API endpoint to fetch the latest courses and search for courses based on a query.
+## Requirements 🛠️
 
-## Prerequisites ✅
+- Node.js 🚀
+- Express.js ⚡
+- Axios 🌐
+- Cheerio 🍀
+- Cors 🌈
 
-Before running the application, ensure that you have the following installed:
+## Installation 💻
 
-- Node.js (version >= 12.0.0)
-- npm (Node Package Manager)
-
-## Installation 🚀
-
-1. Clone the repository or download the code files.
-2. Navigate to the project directory using the command line.
-3. Run the following command to install the required dependencies:
-
-   ```bash
-   npm install
-   ```
-
-## Usage 📝
-
-To start the EduScout AI-Driven Course, use the following command:
+1. Clone the repository: 📥
 
 ```bash
-node index.js
+git clone 
 ```
 
-This will start the Express server on `http://localhost:3000`.
+2. Navigate to the project directory: 📂
 
-## API Endpoints 🌐
-
-### Check for New Courses
-
-- **URL:** `https://eduscout.vercel.app/api/courses`
-- **Method:** GET
-- **Description:** Fetches the latest courses and their Udemy links (if available).
-- **Response Format:**
-
-  ```json
-  {
-    "newCourses": true|false,
-    "courses": [
-      {
-        "name": "Course Name",
-        "udemyLink": "https://www.udemy.com/course/course-slug",
-        "image": "https://example.com/image-url"
-      },
-      // ...
-    ]
-  }
-  ```
-
-  - `newCourses`: A boolean value indicating whether new courses are available.
-  - `courses`: An array of objects containing the name of the course, its Udemy link, and the image URL.
-
-**Example:**
-
-To fetch the latest courses, you can make a GET request to the following endpoint:
-
-```
-GET https://eduscout.vercel.app/api/courses
+```bash
+cd EduScout https://github.com/well300/EduScout/
 ```
 
-Here's an example in JavaScript using `fetch`:
+3. Install the dependencies: ⚙️
+
+```bash
+npm install
+```
+
+## Usage 🚀
+
+1. Start the application: 🌟
+
+```bash
+node app.js
+```
+
+2. The application will start a sugoi server on `http://localhost:3000`. 🎉🎊
+
+3. To check for new courses, make a GET request to `https://eduscout.vercel.app/api/courses`. ✨📝
+
+Example Syntax for using the API Endpoint:
 
 ```javascript
-fetch('https://eduscout.vercel.app/api/courses')
-  .then(response => response.json())
-  .then(data => {
-    if (data.newCourses) {
+const axios = require('axios');
+
+axios.get('https://eduscout.vercel.app/api/courses')
+  .then(response => {
+    if (response.data.newCourses) {
+      const courses = response.data.courses;
       console.log('New courses available:');
-      data.courses.forEach(course => {
+      courses.forEach(course => {
         console.log('Name:', course.name);
         console.log('Udemy Link:', course.udemyLink);
         console.log('Image URL:', course.image);
+        console.log('----------------------');
       });
     } else {
       console.log('No new courses available.');
@@ -86,78 +67,61 @@ fetch('https://eduscout.vercel.app/api/courses')
   });
 ```
 
-### Search for Courses
+This code makes a GET request to the API endpoint `https://eduscout.vercel.app/api/courses` and retrieves the response. If new courses are available (`response.data.newCourses` is `true`), it iterates over the courses array (`response.data.courses`) and logs the course name, Udemy link, and image URL. If no new courses are available, it logs a message indicating that.
 
-- **URL:** `https://eduscout.vercel.app/api/courses/search`
-- **Method:** GET
-- **Description:** Search for courses based on a query.
-- **Query Parameters:**
-  - `q` (required): The search query.
-- **Response Format:**
+## API Endpoint 🌐
 
-  ```json
-  {
-    "courses": [
-      {
-        "name": "Course Name",
-        "udemyLink": "https://www.udemy.com/course/course-slug",
-        "image": "https://example.com/image-url"
-      },
-      // ...
-    ]
-  }
-  ```
+### Check for New Courses 🆕
 
-  - `courses`: An array of objects containing the name of the course, its Udemy link, and the image URL.
+- Endpoint: `/api/courses`
+- Method: GET
 
-**Example:**
+This sugoi endpoint checks for new courses on an amazing website. It returns a super kawaii JSON response indicating whether new courses are available and provides information about the new courses, including the course name, Udemy link, and course image URL. 🎉💖
 
-To search for courses, you can make a GET request to the following endpoint:
+Example response when new courses are available:
 
-```
-GET https://eduscout.vercel.app/api
-
-/courses/search?q=web+development
+```json
+{
+  "newCourses": true,
+  "courses": [
+    {
+      "name": "Course 1",
+      "udemyLink": "https://www.udemy.com/course/course-1",
+      "image": "https://www.example.com/image1.jpg"
+    },
+    {
+      "name": "Course 2",
+      "udemyLink": "https://www.udemy.com/course/course-2",
+      "image": "https://www.example.com/image2.jpg"
+    }
+  ]
+}
 ```
 
-Replace `web+development` with your actual search query. Here's an example in JavaScript using `fetch`:
+Example response when no new courses are available:
 
-```javascript
-fetch('https://eduscout.vercel.app/api/courses/search?q=web+development')
-  .then(response => response.json())
-  .then(data => {
-    data.courses.forEach(course => {
-      console.log('Name:', course.name);
-      console.log('Udemy Link:', course.udemyLink);
-      console.log('Image URL:', course.image);
-    });
-  })
-  .catch(error => {
-    console.error('An error occurred:', error);
-  });
+```json
+{
+  "newCourses": false
+}
 ```
 
 ## Configuration ⚙️
 
-The following variables can be configured in the code:
+The following variables can be configured in the
 
-- `PORT`: The port on which the Express server listens (default: 3000).
-- `DOMAIN`: The base URL of the website to scrape.
-- `AD_DOMAINS`: An array of domain URLs considered as ads and excluded from scraping.
-- `maxPages`: The maximum number of pages to scrape (set to `null` for unlimited scraping).
+Apologies for the incomplete response. Here's the continuation of the Configuration section in the README:
 
-## AI-Driven Scraping 🤖
-
-The application uses AI algorithms to extract relevant data from the course pages. The `aiDrivenScraping` function performs the AI-driven data extraction using specific selectors and logic. You can modify this function to customize the scraping logic based on your requirements.
+- `DOMAIN`: The base URL of the website to scrape (default: `<website_url>`).
+- `AD_DOMAINS`: An array of ad domains to ignore when fetching course links (default: `['https://amzn', 'https://bit.ly']`).
+- `maxPages`: The maximum number of pages to scrape (default: `null`).
 
 ## Notes 📝
 
-- The application uses the `cheerio` library for parsing HTML and extracting data.
-- The `axios` library is used for making HTTP requests.
-- CORS is enabled to allow cross-origin requests.
-- The application periodically checks for new courses every 30 minutes using the `checkForNewCourses` function.
-- Error handling is implemented for handling errors during scraping and HTTP requests.
+- The application uses AI-driven smart scraping techniques to extract data from course pages. Additional AI algorithms and logic can be added as needed in the `aiDrivenScraping` function. 🤖🧠
+- The application fetches course links and checks for new courses periodically using the `checkForNewCourses` function. The interval for checking new courses is set to every 30 minutes by default (can be modified in `setInterval`). ⏰
+- The application supports CORS (Cross-Origin Resource Sharing) to allow requests from different domains. CORS can be enabled or disabled by modifying the `app.use(cors())` line. 🌍🔒
 
 ## License 📄
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the super sugoi [MIT License](LICENSE). ❤️🌟
