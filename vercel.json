@@ -19,7 +19,7 @@
   ],
   "functions": {
     "api.js": {
-      "maxDuration": 60
+      "runtime": "@vercel/node@1.10.1"
     }
   }
 }
