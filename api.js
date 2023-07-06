@@ -18,6 +18,7 @@ let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
 
 // AI-Driven Smart Scraping function
+// AI-Driven Smart Scraping function
 async function aiDrivenScraping(url) {
   try {
     const response = await axios.get(url);
@@ -31,6 +32,9 @@ async function aiDrivenScraping(url) {
     scrapedData.description = $('p').text();
     scrapedData.price = 'Free';
 
+    // Extract the image URL
+    scrapedData.image = $('img.attachment-full.size-full.wp-post-image').attr('src');
+
     // Additional AI-driven data extraction logic...
 
     return scrapedData;
@@ -39,7 +43,8 @@ async function aiDrivenScraping(url) {
     return null;
   }
 }
-  
+
+
 async function fetchCourseLinks(url) {
   try {
     const response = await axios.get(url);
@@ -100,6 +105,7 @@ async function checkForNewCourses() {
           console.log('Title:', scrapedData.title);
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
+          console.log('Image URL:', scrapedData.image);
           // Additional AI-Driven Smart Scraping logic...
         }
       }
@@ -128,16 +134,16 @@ app.get('/', async (req, res) => {
       const coursesWithUdemyLinks = [];
       for (const course of newLinks) {
         const udemyLink = await getUdemyCourseLink(course.link);
-        coursesWithUdemyLinks.push({ name: course.name, udemyLink });
-
-        // AI-Driven Smart Scraping for new courses
         const scrapedData = await aiDrivenScraping(course.link);
         if (scrapedData) {
           console.log('Results:');
           console.log('Title:', scrapedData.title);
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
+          console.log('Image URL:', scrapedData.image);
           // Additional AI-Driven Smart Scraping logic...
+
+          coursesWithUdemyLinks.push({ name: course.name, udemyLink, image: scrapedData.image });
         }
       }
       res.json({ newCourses: true, courses: coursesWithUdemyLinks });
@@ -155,5 +161,5 @@ setInterval(checkForNewCourses, 1800000); // Check every 30 minutes
 
 // Start the Express server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
