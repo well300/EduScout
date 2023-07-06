@@ -11,6 +11,10 @@
     {
       "src": "/api/courses",
       "dest": "api.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "api.js"
     }
   ]
 }
