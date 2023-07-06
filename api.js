@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Serve static files from the "public" folder
 app.use(express.static('public'));
@@ -106,8 +106,8 @@ async function checkForNewCourses() {
           console.log('Title:', scrapedData.title);
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
-          console.log('Image URL:', scrapedData.image);
-          //Additional AI-Driven Smart Scraping logic...
+          console.log('ImageURL:', scrapedData.image);
+          // Additional AI-Driven Smart Scraping logic...
         }
       }
     } else {
