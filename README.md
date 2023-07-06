@@ -33,7 +33,7 @@ This will start the Express server on `http://localhost:3000`.
 
 ### Check for New Courses
 
-- **URL:** `/`
+- **URL:** `https://eduscout.vercel.app/`
 - **Method:** GET
 - **Description:** Fetches the latest courses and their Udemy links (if available).
 - **Response Format:**
@@ -44,7 +44,8 @@ This will start the Express server on `http://localhost:3000`.
     "courses": [
       {
         "name": "Course Name",
-        "udemyLink": "https://www.udemy.com/course/course-slug"
+        "udemyLink": "https://www.udemy.com/course/course-slug",
+        "image": "https://example.com/image-url"
       },
       // ...
     ]
@@ -52,7 +53,7 @@ This will start the Express server on `http://localhost:3000`.
   ```
 
   - `newCourses`: A boolean value indicating whether new courses are available.
-  - `courses`: An array of objects containing the name of the course and its Udemy link.
+  - `courses`: An array of objects containing the name of the course, its Udemy link, and the image URL.
 
 **Example:**
 
@@ -73,6 +74,7 @@ fetch('https://eduscout.vercel.app/')
       data.courses.forEach(course => {
         console.log('Name:', course.name);
         console.log('Udemy Link:', course.udemyLink);
+        console.log('Image URL:', course.image);
       });
     } else {
       console.log('No new courses available.');
@@ -101,14 +103,13 @@ The application uses AI algorithms to extract relevant data from the course page
 ## Notes 📝
 
 - The application uses the `cheerio` library for parsing HTML and extracting data.
-- The `axios` library is used for making HTTP requests.
+- The `axios` library is used for
+
+making HTTP requests.
 - CORS is enabled to allow cross-origin requests.
 - The application periodically checks for new courses every 30 minutes using the `checkForNewCourses` function.
-- Error handling is implemented for handling errors during scraping
-
- and HTTP requests.
+- Error handling is implemented for handling errors during scraping and HTTP requests.
 
 ## License 📄
 
 This project is licensed under the [MIT License](LICENSE).
-
