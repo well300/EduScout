@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Eduscout Web (Live View)</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #F8F8F8;
+    }
+    
+    header {
+      background-color: #000000;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: 40px;
+      font-weight: 300;
+      color: #FFFFFF;
+      margin-left: 20px;
+      animation: slide-in 1s ease-out forwards;
+    }
+
+    @keyframes slide-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    #courses-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 1200px;
+      width: 100%;
+    }
+    
+    .course-card {
+      width: 300px;
+      margin: 20px;
+      padding: 20px;
+      background-color: #FFFFFF;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      animation: fade-in 1s ease-in-out;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .course-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #000000;
+    }
+    
+    .course-link {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    
+    .course-image {
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    .course-card:hover .course-image {
+      opacity: 0.8;
+    }
+    
+    footer {
+      background-color: #000000;
+      color: #FFFFFF;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .refresh-button {
+      background-color: #007BFF;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 50%;
+      padding: 16px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+      position: absolute;
+      right: 20px;
+    }
+    
+    .refresh-button:hover {
+      background-color: #0056b3;
+    }
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      .refresh-button {
+        position: static;
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Eduscout</h1>
+    </div>
+    <button class="refresh-button" onclick="refreshCourses()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="#FFFFFF" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c2.5 0 4.9-1 6.7-2.7L20 19h-3l1.6-1.6C16 18 14 19 12 19c-4.4 0-8-3.6-8-8s3.6-8 8-8v3L13 4l2 2-4 4zm6.6 10.6l-1.6 1.6C16 14 14 13 12 13c-1.4 0-2.6.6-3.4 1.6L6 13v5h5l-1.6-1.6C11 16 11.9 15 13 15c1.1 0 2 .9 2 2v2h2v-3.6l-1.4 1.6z"/>
+        <path fill="none" d="M0 0h24v24H0z"/>
+      </svg>
+    </button>
+  </header>
+  
+  <main>
+    <div id="courses-container"></div>
+  </main>
+  
+  <footer>
+    &copy; 2023 Eduscout. All rights reserved.
+  </footer>
+  
+  <script>
+    function refreshCourses() {
+      const coursesContainer = document.getElementById('courses-container');
+      coursesContainer.innerHTML = ''; // Clear the courses container
+      
+      fetch('https://eduscout.vercel.app/api/courses')
+        .then(response => response.json())
+        .then(data => {
+          if (data.newCourses) {
+            data.courses.forEach((course, index) => {
+              const courseCard = document.createElement('div');
+              courseCard.classList.add('course-card');
+              
+              const courseImage = document.createElement('img');
+              courseImage.classList.add('course-image');
+              courseImage.src = course.image; // Replace with local image URL or correct image URL
+              
+              const courseName = document.createElement('div');
+              courseName.classList.add('course-name');
+              courseName.textContent = course.name;
+              
+              const courseLink = document.createElement('a');
+              courseLink.classList.add('course-link');
+              courseLink.href = course.udemyLink;
+              courseLink.target = '_blank';
+              courseLink.textContent = 'Go to Udemy';
+              
+             courseCard.appendChild(courseImage);
+              courseCard.appendChild(courseName);
+              courseCard.appendChild(courseLink);
+              coursesContainer.appendChild(courseCard);
+              
+              // Add fade-in animation to each course card
+              setTimeout(() => {
+                courseCard.style.opacity = 1;
+                courseCard.style.transform = 'translateY(0)';
+                courseCard.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+              }, index * 200); // Delay each card's fade-in by 200ms
+            });
+          } else {
+            console.log('No new courses available.');
+          }
+        })
+        .catch(error => {
+          console.error('An error occurred:', error);
+        });
+    }
+    
+    // Initial load of courses
+    refreshCourses();
+  </script>
+</body>
+</html>
