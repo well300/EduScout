@@ -15,13 +15,13 @@ EduScout-chan is a super kawaii web application that scrapes educational course 
 1. Clone the repository: 📥
 
 ```bash
-git clone 
+git clone https://github.com/well300/EduScout/
 ```
 
 2. Navigate to the project directory: 📂
 
 ```bash
-cd EduScout https://github.com/well300/EduScout/
+cd EduScout
 ```
 
 3. Install the dependencies: ⚙️
