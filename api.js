@@ -106,7 +106,7 @@ async function checkForNewCourses() {
           console.log('Title:', scrapedData.title);
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
-          console.log('ImageURL:', scrapedData.image);
+         console.log('Image URL:', scrapedData.image);
           // Additional AI-Driven Smart Scraping logic...
         }
       }
