@@ -2,12 +2,13 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Serve static files from the "public" folder
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Enable CORS
 app.use(cors());
@@ -106,8 +107,9 @@ async function checkForNewCourses() {
           console.log('Title:', scrapedData.title);
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
-         console.log('Image URL:', scrapedData.image);
+          console.log('Image URL:', scrapedData.image);
           // Additional AI-Driven Smart Scraping logic...
+
         }
       }
     } else {
@@ -155,6 +157,11 @@ app.get('/api/courses', async (req, res) => {
     console.error('An error occurred while checking for new courses:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+});
+
+// Serve the "index.html" file for any other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start the periodic check for new courses every 30 minutes
