@@ -18,7 +18,6 @@ let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
 
 // AI-Driven Smart Scraping function
-// AI-Driven Smart Scraping function
 async function aiDrivenScraping(url) {
   try {
     const response = await axios.get(url);
@@ -43,7 +42,6 @@ async function aiDrivenScraping(url) {
     return null;
   }
 }
-
 
 async function fetchCourseLinks(url) {
   try {
@@ -110,7 +108,8 @@ async function checkForNewCourses() {
         }
       }
     } else {
-      const allLinks = [...previousLinks];
+      const allLinks = [...previousLinks].map(link => ({ name: link.name, link: link }));
+
       const lastTwoCourses = allLinks.slice(-2);
       console.log('Last two courses:');
       lastTwoCourses.forEach(course => console.log(course.name));
@@ -123,8 +122,9 @@ async function checkForNewCourses() {
 // Endpoint to check for new courses
 app.get('/api/courses', async (req, res) => {
   try {
-    currentPage++;
-    const url = `${DOMAIN}/all-courses/page/${currentPage}/`;
+    const page = parseInt(req.query.page) || 1; // Get the page number from the request query parameters
+
+    const url = `${DOMAIN}/all-courses/page/${page}/`;
     const courseLinks = await fetchCourseLinks(url);
     const currentLinks = new Set(courseLinks.map(course => course.link));
     const newLinks = courseLinks.filter(course => !previousLinks.has(course.link));
@@ -136,13 +136,6 @@ app.get('/api/courses', async (req, res) => {
         const udemyLink = await getUdemyCourseLink(course.link);
         const scrapedData = await aiDrivenScraping(course.link);
         if (scrapedData) {
-          console.log('Results:');
-          console.log('Title:', scrapedData.title);
-          console.log('Description:', scrapedData.description);
-          console.log('Price:', scrapedData.price);
-          console.log('Image URL:', scrapedData.image);
-          // Additional AI-Driven Smart Scraping logic...
-
           coursesWithUdemyLinks.push({ name: course.name, udemyLink, image: scrapedData.image });
         }
       }
@@ -151,7 +144,35 @@ app.get('/api/courses', async (req, res) => {
       res.json({ newCourses: false });
     }
   } catch (error) {
-    console.error('An error occurred while checking for new courses:', error);
+    console.error('An error occurred while fetching course links:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint to search for courses
+app.get('/api/courses/search', async (req, res) => {
+  try {
+    const query = req.query.q; // Get the search query from the request query parameters
+
+    // Construct the search URL
+    const searchUrl = `${DOMAIN}/all-courses/page/1/?s=${encodeURIComponent(query)}`;
+
+    // Fetch the course links from the search results page
+    const courseLinks = await fetchCourseLinks(searchUrl);
+
+    // Perform AI-driven scraping for the search results
+    const courses = [];
+    for (const course of courseLinks) {
+      const scrapedData = await aiDrivenScraping(course.link);
+      if (scrapedData) {
+        const udemyLink = await getUdemyCourseLink(course.link);
+        courses.push({ name: course.name, udemyLink, image: scrapedData.image });
+      }
+    }
+
+    res.json({ courses });
+  } catch (error) {
+    console.error('An error occurred while searching for courses:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
