@@ -1,16 +1,16 @@
 {
-    "version": 2,
-    "name": "EduScout",
-    "builds": [
-      {
-        "src": "api.js"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/courses",
-        "dest": "api.js"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "name": "EduScout",
+  "builds": [
+    {
+      "src": "api.js",
+      "use": "@vercel/node@1.11.0"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/courses",
+      "dest": "api.js"
+    }
+  ]
+}
