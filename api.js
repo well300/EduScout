@@ -6,6 +6,9 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+// Serve static files from the "public" folder
+app.use(express.static('public'));
+
 // Enable CORS
 app.use(cors());
 
@@ -17,7 +20,6 @@ let currentPage = 0;
 let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
 
-// AI-Driven Smart Scraping function
 // AI-Driven Smart Scraping function
 async function aiDrivenScraping(url) {
   try {
@@ -43,7 +45,6 @@ async function aiDrivenScraping(url) {
     return null;
   }
 }
-
 
 async function fetchCourseLinks(url) {
   try {
@@ -106,7 +107,7 @@ async function checkForNewCourses() {
           console.log('Description:', scrapedData.description);
           console.log('Price:', scrapedData.price);
           console.log('Image URL:', scrapedData.image);
-          // Additional AI-Driven Smart Scraping logic...
+          //Additional AI-Driven Smart Scraping logic...
         }
       }
     } else {
