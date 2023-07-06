@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Enable CORS
 app.use(cors());
@@ -17,7 +17,6 @@ let currentPage = 0;
 let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
 
-// AI-Driven Smart Scraping function
 // AI-Driven Smart Scraping function
 async function aiDrivenScraping(url) {
   try {
@@ -44,7 +43,6 @@ async function aiDrivenScraping(url) {
   }
 }
 
-
 async function fetchCourseLinks(url) {
   try {
     const response = await axios.get(url);
@@ -57,9 +55,7 @@ async function fetchCourseLinks(url) {
       courseLinks.push({ name, link });
     });
 
-    lastPage = $('.next_paginate_link')
-      .prev()
-      .text();
+    lastPage = $('.next_paginate_link').prev().text();
 
     return courseLinks;
   } catch (error) {
@@ -87,13 +83,13 @@ async function checkForNewCourses() {
     currentPage++;
     const url = `${DOMAIN}/all-courses/page/${currentPage}/`;
     const courseLinks = await fetchCourseLinks(url);
-    const currentLinks = new Set(courseLinks.map(course => course.link));
-    const newLinks = courseLinks.filter(course => !previousLinks.has(course.link));
+    const currentLinks = new Set(courseLinks.map((course) => course.link));
+    const newLinks = courseLinks.filter((course) => !previousLinks.has(course.link));
 
     if (newLinks.length > 0) {
       console.log('New courses added:');
       const lastCourse = [...previousLinks].pop();
-      newLinks.forEach(course => console.log(course.name));
+      newLinks.forEach((course) => console.log(course.name));
       console.log(lastCourse.name);
       previousLinks = currentLinks;
 
@@ -123,33 +119,8 @@ async function checkForNewCourses() {
 // Endpoint to check for new courses
 app.get('/api/courses', async (req, res) => {
   try {
-    currentPage++;
-    const url = `${DOMAIN}/all-courses/page/${currentPage}/`;
-    const courseLinks = await fetchCourseLinks(url);
-    const currentLinks = new Set(courseLinks.map(course => course.link));
-    const newLinks = courseLinks.filter(course => !previousLinks.has(course.link));
-
-    if (newLinks.length > 0) {
-      previousLinks = currentLinks;
-      const coursesWithUdemyLinks = [];
-      for (const course of newLinks) {
-        const udemyLink = await getUdemyCourseLink(course.link);
-        const scrapedData = await aiDrivenScraping(course.link);
-        if (scrapedData) {
-          console.log('Results:');
-          console.log('Title:', scrapedData.title);
-          console.log('Description:', scrapedData.description);
-          console.log('Price:', scrapedData.price);
-          console.log('Image URL:', scrapedData.image);
-          // Additional AI-Driven Smart Scraping logic...
-
-          coursesWithUdemyLinks.push({ name: course.name, udemyLink, image: scrapedData.image });
-        }
-      }
-      res.json({ newCourses: true, courses: coursesWithUdemyLinks });
-    } else {
-      res.json({ newCourses: false });
-    }
+    const result = await checkForNewCourses();
+    res.json(result);
   } catch (error) {
     console.error('An error occurred while checking for new courses:', error);
     res.status(500).json({ error: 'Internal server error' });
