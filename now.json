@@ -1,19 +1,15 @@
 {
   "version": 2,
-  "name": "EduScout",
-  "routes": [
+  "builds": [
     {
-      "src": "/(.*)",
-      "dest": "/api.js",
-      "methods": ["GET", "POST", "PUT", "DELETE"],
-      "headers": {
-        "Cache-Control": "s-maxage=0"
-      }
+      "src": "api.js",
+      "use": "@vercel/node"
     }
   ],
-  "functions": {
-    "api.js": {
-      "maxDuration": 60
+  "routes": [
+    {
+      "src": "/api/.*",
+      "dest": "api.js"
     }
-  }
+  ]
 }
