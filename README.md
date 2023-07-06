@@ -1,6 +1,7 @@
+
 # 👨‍🏫 EduScout AI-Driven Course
 
-This is a Node.js application that performs AI-driven scraping of a website to fetch course information. The application periodically checks for new courses and extracts relevant data using AI algorithms. It also provides an API endpoint to fetch the latest courses.
+This is a Node.js application that performs AI-driven scraping of a website to fetch course information. The application periodically checks for new courses and extracts relevant data using AI algorithms. It also provides an API endpoint to fetch the latest courses and search for courses based on a query.
 
 ## Prerequisites ✅
 
@@ -21,7 +22,7 @@ Before running the application, ensure that you have the following installed:
 
 ## Usage 📝
 
-To start the EduScout AI-driven course, use the following command:
+To start the EduScout AI-Driven Course, use the following command:
 
 ```bash
 node index.js
@@ -29,7 +30,7 @@ node index.js
 
 This will start the Express server on `http://localhost:3000`.
 
-## API Endpoint 🌐
+## API Endpoints 🌐
 
 ### Check for New Courses
 
@@ -57,7 +58,7 @@ This will start the Express server on `http://localhost:3000`.
 
 **Example:**
 
-To interact with the API and fetch the latest courses, you can make a GET request to the following endpoint:
+To fetch the latest courses, you can make a GET request to the following endpoint:
 
 ```
 GET https://eduscout.vercel.app/api/courses
@@ -85,7 +86,56 @@ fetch('https://eduscout.vercel.app/api/courses')
   });
 ```
 
-Feel free to adapt the code snippet to your preferred programming language or tool.
+### Search for Courses
+
+- **URL:** `https://eduscout.vercel.app/api/courses/search`
+- **Method:** GET
+- **Description:** Search for courses based on a query.
+- **Query Parameters:**
+  - `q` (required): The search query.
+- **Response Format:**
+
+  ```json
+  {
+    "courses": [
+      {
+        "name": "Course Name",
+        "udemyLink": "https://www.udemy.com/course/course-slug",
+        "image": "https://example.com/image-url"
+      },
+      // ...
+    ]
+  }
+  ```
+
+  - `courses`: An array of objects containing the name of the course, its Udemy link, and the image URL.
+
+**Example:**
+
+To search for courses, you can make a GET request to the following endpoint:
+
+```
+GET https://eduscout.vercel.app/api
+
+/courses/search?q=web+development
+```
+
+Replace `web+development` with your actual search query. Here's an example in JavaScript using `fetch`:
+
+```javascript
+fetch('https://eduscout.vercel.app/api/courses/search?q=web+development')
+  .then(response => response.json())
+  .then(data => {
+    data.courses.forEach(course => {
+      console.log('Name:', course.name);
+      console.log('Udemy Link:', course.udemyLink);
+      console.log('Image URL:', course.image);
+    });
+  })
+  .catch(error => {
+    console.error('An error occurred:', error);
+  });
+```
 
 ## Configuration ⚙️
 
@@ -103,9 +153,7 @@ The application uses AI algorithms to extract relevant data from the course page
 ## Notes 📝
 
 - The application uses the `cheerio` library for parsing HTML and extracting data.
-- The `axios` library is used for
-
-making HTTP requests.
+- The `axios` library is used for making HTTP requests.
 - CORS is enabled to allow cross-origin requests.
 - The application periodically checks for new courses every 30 minutes using the `checkForNewCourses` function.
 - Error handling is implemented for handling errors during scraping and HTTP requests.
