@@ -33,7 +33,7 @@ This will start the Express server on `http://localhost:3000`.
 
 ### Check for New Courses
 
-- **URL:** `https://eduscout.vercel.app/`
+- **URL:** `https://eduscout.vercel.app/api/courses`
 - **Method:** GET
 - **Description:** Fetches the latest courses and their Udemy links (if available).
 - **Response Format:**
@@ -60,13 +60,13 @@ This will start the Express server on `http://localhost:3000`.
 To interact with the API and fetch the latest courses, you can make a GET request to the following endpoint:
 
 ```
-GET https://eduscout.vercel.app/
+GET https://eduscout.vercel.app/api/courses
 ```
 
 Here's an example in JavaScript using `fetch`:
 
 ```javascript
-fetch('https://eduscout.vercel.app/')
+fetch('https://eduscout.vercel.app/api/courses')
   .then(response => response.json())
   .then(data => {
     if (data.newCourses) {
