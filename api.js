@@ -18,6 +18,7 @@ let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
 
 // AI-Driven Smart Scraping function
+// AI-Driven Smart Scraping function
 async function aiDrivenScraping(url) {
   try {
     const response = await axios.get(url);
@@ -120,7 +121,7 @@ async function checkForNewCourses() {
 }
 
 // Endpoint to check for new courses
-app.get('/', async (req, res) => {
+app.get('/api/courses', async (req, res) => {
   try {
     currentPage++;
     const url = `${DOMAIN}/all-courses/page/${currentPage}/`;

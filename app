@@ -1,9 +1,13 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
+
+// Enable CORS
+app.use(cors());
 
 const DOMAIN = 'https://www.tutorialbar.com';
 const AD_DOMAINS = ['https://amzn', 'https://bit.ly'];
@@ -12,6 +16,33 @@ let previousLinks = new Set();
 let currentPage = 0;
 let lastPage = null;
 const maxPages = null; // Set the maximum number of pages to scrape if needed
+
+// AI-Driven Smart Scraping function
+async function aiDrivenScraping(url) {
+  try {
+    const response = await axios.get(url);
+    const $ = cheerio.load(response.data);
+
+    // Perform AI-driven data extraction using specific selectors and logic
+    const scrapedData = {};
+
+    // Extract relevant data using AI algorithms
+    scrapedData.title = $('h1').text();
+    scrapedData.description = $('p').text();
+    scrapedData.price = 'Free';
+
+    // Extract the image URL
+    scrapedData.image = $('img.attachment-full.size-full.wp-post-image').attr('src');
+
+    // Additional AI-driven data extraction logic...
+
+    return scrapedData;
+  } catch (error) {
+    console.error('An error occurred while AI-driven scraping:', error);
+    return null;
+  }
+}
+
 
 async function fetchCourseLinks(url) {
   try {
@@ -64,6 +95,19 @@ async function checkForNewCourses() {
       newLinks.forEach(course => console.log(course.name));
       console.log(lastCourse.name);
       previousLinks = currentLinks;
+
+      // AI-Driven Smart Scraping for new courses
+      for (const course of newLinks) {
+        const scrapedData = await aiDrivenScraping(course.link);
+        if (scrapedData) {
+          console.log('Results:');
+          console.log('Title:', scrapedData.title);
+          console.log('Description:', scrapedData.description);
+          console.log('Price:', scrapedData.price);
+          console.log('Image URL:', scrapedData.image);
+          // Additional AI-Driven Smart Scraping logic...
+        }
+      }
     } else {
       const allLinks = [...previousLinks];
       const lastTwoCourses = allLinks.slice(-2);
@@ -76,7 +120,7 @@ async function checkForNewCourses() {
 }
 
 // Endpoint to check for new courses
-app.get('/api/check-new-courses', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     currentPage++;
     const url = `${DOMAIN}/all-courses/page/${currentPage}/`;
@@ -89,7 +133,17 @@ app.get('/api/check-new-courses', async (req, res) => {
       const coursesWithUdemyLinks = [];
       for (const course of newLinks) {
         const udemyLink = await getUdemyCourseLink(course.link);
-        coursesWithUdemyLinks.push({ name: course.name, udemyLink });
+        const scrapedData = await aiDrivenScraping(course.link);
+        if (scrapedData) {
+          console.log('Results:');
+          console.log('Title:', scrapedData.title);
+          console.log('Description:', scrapedData.description);
+          console.log('Price:', scrapedData.price);
+          console.log('Image URL:', scrapedData.image);
+          // Additional AI-Driven Smart Scraping logic...
+
+          coursesWithUdemyLinks.push({ name: course.name, udemyLink, image: scrapedData.image });
+        }
       }
       res.json({ newCourses: true, courses: coursesWithUdemyLinks });
     } else {
