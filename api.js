@@ -121,7 +121,7 @@ async function checkForNewCourses() {
 }
 
 // Endpoint to check for new courses
-app.get('/', async (req, res) => {
+app.get('/api/courses', async (req, res) => {
   try {
     currentPage++;
     const url = `${DOMAIN}/all-courses/page/${currentPage}/`;
