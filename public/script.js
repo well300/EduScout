@@ -2,7 +2,7 @@ function refreshCourses() {
   const coursesContainer = document.getElementById('courses-container');
   coursesContainer.innerHTML = ''; // Clear the courses container
 
-  fetch('MONVq21frRrEm8Xl4H32D2W2qsvcfPzlbP3jKjQRXwId6OSV1ODTIUWSyhZJ2qgD')
+  fetch('https://eduscout.vercel.app/api/courses')
     .then(response => response.json())
     .then(data => {
       if (data.newCourses) {
