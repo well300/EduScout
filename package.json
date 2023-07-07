@@ -1,8 +1,8 @@
 {
-  "name": "udemy-courses-api",
+  "name": "eduscout",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "start": "nodemon api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
