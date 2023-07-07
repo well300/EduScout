@@ -51,3 +51,13 @@ refreshCourses();
 // Add event listener to refresh button
 const refreshButton = document.querySelector('.refresh-button');
 refreshButton.addEventListener('click', refreshCourses);
+
+// Prevent anchor links from triggering default behavior on mobile
+const courseLinks = document.querySelectorAll('.course-link');
+courseLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    if (window.innerWidth <= 600) {
+      e.preventDefault();
+    }
+  });
+});
