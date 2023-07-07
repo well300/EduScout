@@ -47,3 +47,7 @@ function refreshCourses() {
 
 // Initial load of courses
 refreshCourses();
+
+// Add event listener to refresh button
+const refreshButton = document.querySelector('.refresh-button');
+refreshButton.addEventListener('click', refreshCourses);
