@@ -1,5 +1,7 @@
 # EduScout ✨📚🎓
 
+[![npm version](https://img.shields.io/npm/v/package-name.svg)](https://www.npmjs.com/package/eduscout)
+
 EduScout-chan is a super kawaii web application that scrapes educational course information from an amazing website. It uses AI-driven smart scraping techniques to extract relevant data from the course pages and provides an API endpoint to check for new courses periodically. 😄🌟
 
 ## Requirements 🛠️
