@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "name": "nerdypoint-api",
+  "name": "EduScout",
   "builds": [
     {
-      "src": "app.js",
+      "src": "api.js",
       "use": "@vercel/node@1.11.0"
     }
   ],
   "routes": [
     {
-      "src": "/data/courses",
-      "dest": "app.js"
+      "src": "/api/courses",
+      "dest": "api.js"
     },
     {
       "src": "/(.*)",
-      "dest": "app.js"
+      "dest": "api.js"
     }
   ]
 }
